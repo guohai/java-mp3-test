@@ -1,0 +1,13 @@
+http://www5b.biglobe.ne.jp/~harigaya/e/rtfcnv.html
+
+C:\Program Files\Harigaya\Rtfconv\loadcmd.exe
+
+RTFCONV -cRTF -cUTF8 Z:\readme.rtf > Z:\hello-rtf.txt
+
+RTFCONV -cRTF -cUTF8 Z:\readme-c.rtf > Z:\hello-rtf-c.txt
+
+
+
+bat
+cd C:\Program Files\Harigaya\Rtfconv
+RTFCONV -cRTF -cUTF8 Z:\readme.rtf > Z:\hello-rtf.txt

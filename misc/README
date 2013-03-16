@@ -1,0 +1,29 @@
+
+
+用户先上传再备份
+
+
+
+
+
+
+用户的东西
+需要放到临时目录吗？
+
+
+
+先上传再备份
+
+
+
+
+
+
+
+artist需要地区，album需要语种
+
+
+
+db operations:
+/home/guohai/dev/workspace/java/java-mp3/backup/database mysqldump -u root -p -h 192.168.0.9 nimble > nimble20121209.sql
+/home/guohai/dev/workspace/java/java-mp3/backup/database mysqldump -u root -p --socket=/etc/mysql/mysql.sock nimble > nimble.sql
