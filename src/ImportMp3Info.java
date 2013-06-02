@@ -301,8 +301,7 @@ public class ImportMp3Info {
 			 * so far, can not parse song name from file exactly,
 			 * and the title always get garbled from 'tag.getFirst(FieldKey.TITLE)'
 			**/
-			// should truncate .mp3 & track no.
-			bean.setName(audioName);
+			bean.setName(formatTrackName(audioName));
 
 			short track = parseTrack(audioName);
 
@@ -365,18 +364,43 @@ public class ImportMp3Info {
 		}
 	}
 
+	public static String formatTrackName(String audioName) {
+		Matcher m = P.matcher(audioName);
+
+		String formatName = null;
+
+		if (m.find()) {
+			formatName = m.group(2).trim();
+		} else {
+			formatName = audioName;
+		}
+
+		if (formatName.startsWith(". ")) {
+			formatName = formatName.substring(". ".length());
+		} else if (formatName.startsWith("- ")) {
+			formatName = formatName.substring(". ".length());
+		}
+
+		if (formatName.endsWith(".mp3")) {
+			formatName = formatName.substring(0, formatName.length()
+					- ".mp3".length());
+		}
+
+		return formatName;
+	}
+
 	public static short parseTrack(String audioName) {
 		short trackNo = 0;
-		Matcher m = p.matcher(audioName);
+		Matcher m = P.matcher(audioName);
 
 		if (m.find()) {
 			try {
-				trackNo = Short.parseShort(m.group(0).trim());
+				trackNo = Short.parseShort(m.group(1).trim());
 			} catch (NumberFormatException e) {
-				System.err.println("can not parse track no. " + audioName);
+				System.err.println("can not parse track no.(" + m.group(0).trim() + ") @ " + audioName);
 			}
 		} else {
-			System.err.println("track no. not found " + audioName);
+			System.err.println("track no. not found @ " + audioName);
 		}
 
 //		System.out.println("track number: " + trackNo);
@@ -384,8 +408,8 @@ public class ImportMp3Info {
 		return trackNo;
 	}
 
-	static final String REGEX = "^\\s*\\d+";
-	static Pattern p = Pattern.compile(REGEX);
+	static final String REGEX = "^(\\s*\\d+)(.*)"; // blank(s) digit(s) char(s)
+	static Pattern P = Pattern.compile(REGEX);
 
 	public static void checkIfArtistAlreadyExist() {
 

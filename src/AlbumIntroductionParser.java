@@ -2,16 +2,21 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.xkit.cc.utils.StringUtils;
 
+import sys.DataCache;
+
 public class AlbumIntroductionParser {
 
 	public static void main(String[] args) {
+		AlbumInfo album = new AlbumInfo();
+
 		try {
-			parseIntro("C:\\output\\港台音乐\\1\\大幅度\\readme.txt", null);
+			parseIntro("C:\\output\\港台音乐\\1\\大幅度\\readme.txt", album);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -36,7 +41,8 @@ public class AlbumIntroductionParser {
 
 		System.out.println(new java.util.Date());
 
-		BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(introFile), "UTF-8"));
+		BufferedReader reader = new BufferedReader(new InputStreamReader(
+				new FileInputStream(introFile), "UTF-8"));
 
 		while (reader.ready()) {
 			String line = reader.readLine();
@@ -48,14 +54,24 @@ public class AlbumIntroductionParser {
 				}
 			} else if (line.startsWith(ISSUE_TIME)) {
 				if (album != null) {
-					album.setPublishTime(StringUtils.stringToYear(parseTime(line)));
+					album.setPublishTime(StringUtils
+							.stringToYear(parseTime(line)));
 				}
 			} else if (line.startsWith(ARTIST)) {
-				System.out.println(parseArtist(line));
+				if (album != null) {
+					ArtistInfo artist = new ArtistInfo();
+					artist.setName(parseArtist(line));
+					album.addArtist(artist);
+				}
 			} else if (line.startsWith(DISTRICT)) {
-				System.out.println(parseDistrict(line));
+				if (album != null) {
+					DataCache.getDistrictCode(parseDistrict(line));
+				}
 			} else if (line.startsWith(LANGUAGE)) {
-				System.out.println(parseLanguage(line));
+				if (album != null) {
+					album.setLanguage(DataCache
+							.getLanguageCode(parseLanguage(line)));
+				}
 			} else if (line.startsWith(INTRO)) {
 				isCommentBegin = true;
 				isTracksBegin = false;
@@ -141,7 +157,18 @@ public class AlbumIntroductionParser {
 		if (album == null)
 			return;
 		System.out.println(album.getName());
+
+		System.out.println(album.getArtist().getName());
+
+		System.out.println(album.getPublishTime());
+
+		System.out.println(DataCache.getLanguageName(album.getLanguage()));
+
 		System.out.println(album.getIntroduction());
+
+//		for (AudioInfo audio : album.getAudio()) {
+//			System.out.println(audio.getName());
+//		}
 	}
 
 	static final String SEPARATOR = ":";

@@ -18,6 +18,8 @@ public class AlbumInfo {
 
 	private ImageInfo image;
 
+	private short language;
+
 	public long getId() {
 		return id;
 	}
@@ -96,4 +98,12 @@ public class AlbumInfo {
 	private ArtistInfo artist;
 
 	private List<AudioInfo> audios;
+
+	public short getLanguage() {
+		return language;
+	}
+
+	public void setLanguage(short language) {
+		this.language = language;
+	}
 }

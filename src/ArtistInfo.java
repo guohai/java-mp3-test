@@ -16,8 +16,6 @@ public class ArtistInfo {
 
 	private short region;
 
-	private short language;
-
 	private GenreInfo genre;
 
 	public long getId() {
@@ -83,13 +81,4 @@ public class ArtistInfo {
 	public void setRegion(short region) {
 		this.region = region;
 	}
-
-	public short getLanguage() {
-		return language;
-	}
-
-	public void setLanguage(short language) {
-		this.language = language;
-	}
-
 }

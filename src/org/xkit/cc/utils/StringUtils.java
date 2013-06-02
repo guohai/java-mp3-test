@@ -10,10 +10,15 @@ public class StringUtils {
 
 	private static final String DATE_FORMATTER_ZH_CN = "yyyy年mm月dd日";
 
+	private static final String DATE_FORMATTER_ZH_CN_ONLY_YEAR = "yyyy年";
+
 	private static DateFormat formatter = new SimpleDateFormat(DATE_FORMATTER);
 
 	private static DateFormat formatterZhCN = new SimpleDateFormat(
 			DATE_FORMATTER_ZH_CN);
+
+	private static DateFormat formatterZhCNOnlyYear = new SimpleDateFormat(
+			DATE_FORMATTER_ZH_CN_ONLY_YEAR);
 
 	private static Calendar calendar = Calendar.getInstance();
 
@@ -29,6 +34,11 @@ public class StringUtils {
 
 		try {
 			return (formatterZhCN.parse(s));
+		} catch (ParseException e) {
+		}
+
+		try {
+			return (formatterZhCNOnlyYear.parse(s));
 		} catch (ParseException e) {
 			return new java.util.Date();
 		}
